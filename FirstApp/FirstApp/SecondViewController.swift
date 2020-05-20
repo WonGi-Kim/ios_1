@@ -9,8 +9,33 @@
 import Foundation
 import UIKit
 
-class SecondViewController : UIViewController {
+class SecondViewController : UIViewController, UITextFieldDelegate {
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        //textfield 글자 수 제한과 키보드 내리기를 위한 delegate 선언
+        MidScore.delegate = self
+        FinalScore.delegate = self
+        ProjScore.delegate = self
+        AttendScore.delegate = self
+        
+    }
+    
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+      let maxNumber = 3
+      let currentString: NSString = textField.text! as NSString
+      let newString: NSString =
+        currentString.replacingCharacters(in: range, with: string) as NSString
+        //글자 수 복붙 제한, 100이하의 숫자 입력
+        return newString.length <= maxNumber && newString.integerValue <= 100
+        
+    }
+    
+     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
+          self.view.endEditing(true)
+    }
+
     
     @IBOutlet weak var MidScore: UITextField!
     @IBOutlet weak var FinalScore: UITextField!
@@ -18,35 +43,23 @@ class SecondViewController : UIViewController {
     @IBOutlet weak var AttendScore: UITextField!
     
     
-    @IBAction func MidScore(_ sender: Any) {
-    }
-    @IBAction func FinalScore(_ sender: Any) {
-    }
-    @IBAction func ProjScore(_ sender: Any) {
-    }
-    @IBAction func AttendScore(_ sender: Any) {
-    }
     
-    
-    var mid: Int = 0
-    var final: Int = 0
-    var proj: Int = 0
-    var attend: Int = 0
-    
+    @IBAction func MidScore(_ sender: UITextField) {
+        
+    }
     
     @IBAction func Summit(_ sender: UIButton) {
-       guard let rvc = self.storyboard?.instantiateViewController(withIdentifier: "ResultVC") as? ResultViewControll else {
-            return
+       guard let rvc = self.storyboard?.instantiateViewController(withIdentifier: "ResultVC") as? ResultViewController else {            return
         }
         
         //전달 할 변수들
-        rvc.student.Mid = (MidScore.text! as NSString).integerValue
+        rvc.student.Mid = Int(MidScore.text!) ?? 0
         
-        rvc.student.Final = (FinalScore.text! as NSString).integerValue
+        rvc.student.Final = Int(FinalScore.text!) ?? 0
         
-        rvc.student.Proj = (ProjScore.text! as NSString).integerValue
+        rvc.student.Proj = Int(ProjScore.text!) ?? 0
         
-        rvc.student.Attend = (AttendScore.text! as NSString).integerValue
+        rvc.student.Attend = Int(AttendScore.text!) ?? 0
         
        
         
@@ -54,7 +67,7 @@ class SecondViewController : UIViewController {
         
     }
     
-    @IBAction func back(_ sender: Any) {
+    @IBAction func back(_ sender: UIButton) {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     

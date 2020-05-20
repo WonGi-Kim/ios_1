@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ResultViewControll : UIViewController {
+class ResultViewController : UIViewController {
     
     class Student {
         
@@ -69,13 +69,15 @@ class ResultViewControll : UIViewController {
         self.ResultGrade.text = "당신의 학점은 " + student.SGrade()
     }
 
-    @IBOutlet var ResultSum: UILabel!
-    @IBOutlet var ResultAvg: UILabel!
-    @IBOutlet var ResultGrade: UILabel!
+    @IBOutlet weak var ResultSum: UILabel!
+    @IBOutlet weak var ResultAvg: UILabel!
+    @IBOutlet weak var ResultGrade: UILabel!
     
-    
-    @IBAction func back(_ sender: Any) {
+
+    @IBAction func back(_ sender: UIButton) {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        sender.setTitle("back", for: .normal)
     }
     
 }
